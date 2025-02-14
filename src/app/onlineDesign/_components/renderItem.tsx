@@ -1,13 +1,17 @@
-import React, {Suspense} from 'react';
-
+import React, { Suspense } from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import {RenderNodeType} from "@/app/onlineDesign/_static/schema.type.ts";
 
-export default function RenderItem(props: { nodeData: RenderNodeType }) {
-  const {nodeData} = props
-  if (Array.isArray(nodeData.children) && nodeData.children.length) {
+export default function RenderItem(props: { nodeData: RenderNodeType, onClick: (nodeData: RenderNodeType) => void }) {
+  const { nodeData, onClick } = props
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: nodeData._uid
+  });
+  if (Array.isArray(nodeData.children) && nodeData.children.length && !nodeData.customInsertNodeData) {
     return nodeData.children.map(node => {
-      return <Suspense fallback={<div>Loading...</div>} key={node.key}>
-        <RenderItem nodeData={node}></RenderItem>
+      return <Suspense fallback={<div>Loading...</div>} key={node._uid}>
+        <RenderItem nodeData={node} onClick={() => onClick(nodeData)}></RenderItem>
       </Suspense>
     })
   } else {
@@ -19,7 +23,15 @@ export default function RenderItem(props: { nodeData: RenderNodeType }) {
       comProps.nodeConfig = nodeData.config
     }
     if (RenderCom) {
-      return <RenderCom {...comProps}></RenderCom>
+      const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        // padding: '10px',
+        // margin: '5px',
+        // border: '1px solid #ccc',
+        // backgroundColor: '#fff',
+      };
+      return <span ref={setNodeRef} style={style} {...attributes} {...listeners} ><RenderCom {...comProps} onClick={() => onClick(nodeData)}></RenderCom></span>
     }
   }
 }

@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+.iconHover:hover {
+  color: var(--ant-color-primary);
+  /* 使用 Ant Design 的主题色 */
+}

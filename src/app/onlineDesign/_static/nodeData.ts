@@ -63,6 +63,5 @@ export const InsertNode = function (rootNode: RenderNodeType[], parentNode: Rend
   }
   // 动态根据_path生成update插入对象结构，eg：{a: {b: {$push: [val]}}}
   const updateObj = GeneratePath(val._path, val)
-  console.log('updateObj', updateObj)
   return update(rootNode, updateObj)
 }

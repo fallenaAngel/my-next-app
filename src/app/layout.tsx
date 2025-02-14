@@ -19,11 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <AntdRegistry>
-        <Watermark content="Ant Design">
-          {children}
-        </Watermark>
-      </AntdRegistry>
+        <AntdRegistry>
+          <Watermark content="Ant Design">
+            {children}
+          </Watermark>
+        </AntdRegistry>
       </body>
     </html>
   );

@@ -13,12 +13,112 @@ const ElementList = [
       {
         name: '按钮',
         key: 'Button',
-        comUrl: dynamic(() => import("antd/lib/button"))
+        comUrl: dynamic(() => import("antd/lib/button")),
+        config: {
+          name: {
+            label: '按钮名称',
+            key: 'name',
+            type: 'input',
+            value: '按钮'
+          },
+          type: {
+            label: '按钮类型',
+            key: 'type',
+            type: 'select',
+            options: [
+              {
+                label: '默认',
+                value: 'default'
+              },
+              {
+                label: '主要',
+                value: 'primary'
+              },
+              {
+                label: '虚线',
+                value: 'dashed'
+              },
+              {
+                label: '链接',
+                value: 'link'
+              },
+              {
+                label: '文本',
+                value: 'text'
+              }
+            ]
+          },
+          shape: {
+            label: '按钮形状',
+            key: 'shape',
+            type: 'select',
+            options: [
+              {
+                label: '默认',
+                value: 'default'
+              },
+              {
+                label: '圆',
+                value: 'circle'
+              },
+              {
+                label: '圆角',
+                value: 'round'
+              }
+            ]
+          },
+          size: {
+            label: '按钮大小',
+            key: 'size',
+            type: 'select',
+            options: [
+              {
+                label: '默认',
+                value: 'middle'
+              },
+              {
+                label: '大',
+                value: 'large'
+              },
+              {
+                label: '小',
+                value: 'small'
+              }
+            ]
+          },
+          autoInsertSpace: {
+            label: '自动插入空格',
+            key: 'autoInsertSpace',
+            type: 'switch',
+            default: false
+          },
+          icon: {
+            label: '图标',
+            key: 'icon',
+            type: 'input'
+          },
+          iconPosition: {
+            label: '图标位置',
+            key: 'iconPosition',
+            type: 'select',
+            options: [
+              {
+                label: '左',
+                value: 'start'
+              },
+              {
+                label: '右',
+                value: 'end'
+              }
+            ]
+          }
+        }
       },
       {
         name: '悬浮按钮',
         key: 'FloatButton',
-        comUrl: dynamic(() => import("antd/lib/float-button"))
+        comUrl: dynamic(() => import("antd/lib/float-button")),
+        config: {}
       }
     ]
   },
@@ -29,7 +129,8 @@ const ElementList = [
       {
         name: '布局',
         key: 'Layout',
-        comUrl: dynamic(() => import("antd/lib/layout"))
+        comUrl: dynamic(() => import("antd/lib/layout")),
+        config: {}
       },
       {
         name: '栅格',
@@ -40,9 +141,10 @@ const ElementList = [
           colSpans: [8, 8, 8]
         },
         customInsertNodeData: function (node: RenderNodeType) {
+          const colSpans = node.config && node.config.colSpans ? node.config.colSpans : [8, 8, 8]
           return {
             ...node,
-            children: node.config && node.config.colSpans.map((v: number, index:number) => {
+            children: Array.isArray(colSpans) ? colSpans.map((v: number, index:number) => {
               return {
                 _uid: generateRandomString(5, 'Col'),
                 _path: node._path + '/children/' + index,
@@ -53,7 +155,7 @@ const ElementList = [
                 isCustomCom: true,
                 children: []
               }
-            })
+            }) : []
           }
         }
       }
@@ -68,7 +170,11 @@ const ElementList = [
         key: 'Input',
         comUrl: dynamic(() => import("antd/lib/input")),
         config: {
-          placeholder: '请输入'
+          placeholder: {
+            label: '输入框提示',
+            key: 'placeholder',
+            type: 'input'
+          }
         }
       },
       {
@@ -76,7 +182,11 @@ const ElementList = [
         key: 'Select',
         comUrl: dynamic(() => import("antd/lib/select")),
         config: {
-          placeholder: '请选择'
+          placeholder: {
+            label: '选择器提示',
+            key: 'placeholder',
+            type: 'input'
+          }
         }
       }
     ]
