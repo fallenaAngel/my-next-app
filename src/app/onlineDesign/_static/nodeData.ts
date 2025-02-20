@@ -48,8 +48,10 @@ export const InsertNode = function (rootNode: RenderNodeType[], parentNode: Rend
   let val: RenderNodeType = {
     ...insertData,
     _uid: generateRandomString(5, insertData.key),
-    _path: ''
+    _path: '',
+    id: ''
   }
+  val.id = val._uid
   // 第一级元素
   if (!parentNode) {
     val._path = 'root/' + rootNode.length
@@ -64,4 +66,15 @@ export const InsertNode = function (rootNode: RenderNodeType[], parentNode: Rend
   // 动态根据_path生成update插入对象结构，eg：{a: {b: {$push: [val]}}}
   const updateObj = GeneratePath(val._path, val)
   return update(rootNode, updateObj)
+}
+
+// 删除节点
+export const DeleteNode = function (rootNode: RenderNodeType[], node: RenderNodeType) {
+  const parts = node._path.split('/').slice(1); // 分割路径并去掉第一个部分 "root"
+  console.log('parts', parts);
+  console.log('node', rootNode, node);
+  
+  // if (parts.length === 1) {
+    return update(rootNode, { $splice: [[parseInt(parts[0]), 1]] })
+  // }
 }
